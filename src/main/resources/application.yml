@@ -22,3 +22,9 @@ spring:
   output:
     ansi:
       enabled: always
+logging:
+    level:
+      org.hibernate:
+        type: debug
+        sql: debug
+      org.springframework: debug

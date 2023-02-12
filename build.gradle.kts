@@ -21,7 +21,9 @@ dependencies {
 	implementation ("org.projectlombok:lombok")
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation ("org.springframework.boot:spring-boot-starter-security")
+	implementation ("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.3")
+	implementation ("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
