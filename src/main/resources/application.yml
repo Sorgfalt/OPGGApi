@@ -1,6 +1,12 @@
 server:
-  port: 8080
+  port: 9090
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    hiddenmethod:
+      filter:
+        enabled: true
   datasource:
     hikari:
       username: sa
@@ -28,3 +34,13 @@ logging:
         type: debug
         sql: debug
       org.springframework: debug
+
+api :
+  url : "https://kr.api.riotgames.com"
+
+path :
+  riotGames:
+    api :
+      key: "RGAPI-6ed51fa1-0ed9-48a5-991a-ee66b92d3339"
+
+

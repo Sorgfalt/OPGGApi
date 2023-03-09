@@ -15,14 +15,17 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.apache.httpcomponents:httpclient:4.5")
+	implementation("com.squareup.okhttp3:okhttp:4.2.2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	compileOnly ("org.projectlombok:lombok")
+	annotationProcessor ("org.projectlombok:lombok")
 	implementation ("org.projectlombok:lombok")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
-	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-	implementation ("org.springframework.boot:spring-boot-starter-security")
-	implementation ("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.3")
 	implementation ("org.springframework.boot:spring-boot-starter-validation")
 }
 
