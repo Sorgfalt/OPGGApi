@@ -3,7 +3,7 @@ package com.opgg.opggapi.dto.responseDto;
 import lombok.Data;
 
 @Data
-public class SummonerDto {
+public class SummonerDTO {
     private String accountId;
     private int profileIconId;
     private long revisionDate;

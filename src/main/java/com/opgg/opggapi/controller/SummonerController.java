@@ -1,19 +1,22 @@
 package com.opgg.opggapi.controller;
 
-import com.opgg.opggapi.dto.responseDto.LeagueEntriesDto;
-import com.opgg.opggapi.dto.responseDto.SummonerDto;
+import com.opgg.opggapi.dto.responseDto.League.LeagueEntryDTO;
+import com.opgg.opggapi.dto.responseDto.League.LeagueListDTO;
+import com.opgg.opggapi.dto.responseDto.SummonerDTO;
 import com.opgg.opggapi.dto.responseDto.payload.RequestResponse;
+import com.opgg.opggapi.service.LeagueSerivce;
 import com.opgg.opggapi.service.SummonerService;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @CrossOrigin(maxAge = 3600)
 @RestController
@@ -24,23 +27,32 @@ public class SummonerController {
     @Autowired
     private SummonerService summonerService;
 
+    @Autowired
+    private LeagueSerivce leagueSerivce;
+
     @PostMapping(value = "/summonerByName")
     @ResponseBody
-    public RequestResponse<?> getSummoner(String summonerName) {
-        summonerName = summonerName.replaceAll(" ","%20");
+    public RequestResponse<?> getSummoner(@RequestParam("summonerName")String summonerName) throws UnsupportedEncodingException {
+        try {
+            summonerName = summonerName.replaceAll(" ", "%20");
 
-        SummonerDto apiResult = summonerService.callRiotAPISummonerByName(summonerName);
+            SummonerDTO apiResult = summonerService.callRiotAPISummonerByName(summonerName);
 
-        System.out.println("apiResult = " + apiResult);
+            String encryptedSummonerId = apiResult.getId();
 
-        String id = apiResult.getId();
+            List<LeagueEntryDTO> leagueEntryRes = leagueSerivce.getLeagueEntriesForSummoner(encryptedSummonerId);
 
-        System.out.println("id = " + id);
+            String leagueId = leagueEntryRes.get(0).getLeagueId();
 
-        List<LeagueEntriesDto> leagueEntriesRes = summonerService.getLeagueEntriesForSummoner(id);
+            LeagueListDTO LeagueList = leagueSerivce.getLeagueList(leagueId);
 
-        System.out.println("leagueEntriesRes = " + leagueEntriesRes);
-
-        return RequestResponse.of(HttpStatus.OK, RequestResponse.Code.SUCCESS, "it's ok", leagueEntriesRes);
+            return RequestResponse.of(HttpStatus.OK, RequestResponse.Code.SUCCESS, "success", LeagueList);
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid input: {}", e.getMessage(), e);
+            return RequestResponse.of(HttpStatus.BAD_REQUEST, RequestResponse.Code.FAILED, "bad quest", "");
+        } catch (Exception e) {
+            log.error("Failed to get summoner info: {}", e.getMessage(), e);
+            return RequestResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, RequestResponse.Code.FAILED, "server error", "");
+        }
     }
 }
