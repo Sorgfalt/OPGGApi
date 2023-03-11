@@ -2,8 +2,9 @@ package com.opgg.opggapi.controller;
 
 import com.opgg.opggapi.dto.responseDto.League.LeagueEntryDTO;
 import com.opgg.opggapi.dto.responseDto.League.LeagueListDTO;
-import com.opgg.opggapi.dto.responseDto.SummonerDTO;
-import com.opgg.opggapi.dto.responseDto.payload.RequestResponse;
+import com.opgg.opggapi.dto.responseDto.Summoner.SummonerDTO;
+import com.opgg.opggapi.dto.responseDto.RequestResponse;
+import com.opgg.opggapi.dto.responseDto.Summoner.SummonerInfoDTO;
 import com.opgg.opggapi.service.LeagueSerivce;
 import com.opgg.opggapi.service.SummonerService;
 import java.io.UnsupportedEncodingException;
@@ -38,15 +39,25 @@ public class SummonerController {
 
             SummonerDTO apiResult = summonerService.callRiotAPISummonerByName(summonerName);
 
+            System.out.println("apiResult = " + apiResult);
+
             String encryptedSummonerId = apiResult.getId();
 
+            System.out.println("encryptedSummonerId = " + encryptedSummonerId);
+
             List<LeagueEntryDTO> leagueEntryRes = leagueSerivce.getLeagueEntriesForSummoner(encryptedSummonerId);
+
+            System.out.println("leagueEntryRes = " + leagueEntryRes);
+
+            SummonerInfoDTO summonerInfoRes = summonerService.getSummonerInfo(apiResult, leagueEntryRes);
+
+            System.out.println("summonerInfoRes = " + summonerInfoRes);
 
             String leagueId = leagueEntryRes.get(0).getLeagueId();
 
             LeagueListDTO LeagueList = leagueSerivce.getLeagueList(leagueId);
 
-            return RequestResponse.of(HttpStatus.OK, RequestResponse.Code.SUCCESS, "success", LeagueList);
+            return RequestResponse.of(HttpStatus.OK, RequestResponse.Code.SUCCESS, "success", summonerInfoRes);
         } catch (IllegalArgumentException e) {
             log.error("Invalid input: {}", e.getMessage(), e);
             return RequestResponse.of(HttpStatus.BAD_REQUEST, RequestResponse.Code.FAILED, "bad quest", "");

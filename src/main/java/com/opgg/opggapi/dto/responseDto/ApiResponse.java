@@ -1,4 +1,4 @@
-package com.opgg.opggapi.dto.responseDto.payload;
+package com.opgg.opggapi.dto.responseDto;
 
 import lombok.Data;
 

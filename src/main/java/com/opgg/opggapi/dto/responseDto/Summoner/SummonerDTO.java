@@ -1,4 +1,4 @@
-package com.opgg.opggapi.dto.responseDto;
+package com.opgg.opggapi.dto.responseDto.Summoner;
 
 import lombok.Data;
 

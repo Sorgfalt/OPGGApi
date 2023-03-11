@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opgg.opggapi.dto.responseDto.League.LeagueEntryDTO;
 import com.opgg.opggapi.dto.responseDto.League.LeagueListDTO;
-import com.opgg.opggapi.dto.responseDto.SummonerDTO;
+import com.opgg.opggapi.dto.responseDto.Summoner.SummonerDTO;
 import java.io.IOException;
 import java.util.List;
 import org.slf4j.Logger;
