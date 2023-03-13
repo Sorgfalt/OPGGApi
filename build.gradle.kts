@@ -23,12 +23,21 @@ dependencies {
 	compileOnly ("org.projectlombok:lombok")
 	annotationProcessor ("org.projectlombok:lombok")
 	implementation ("org.projectlombok:lombok")
-	implementation("io.springfox:springfox-boot-starter:3.0.0")
-	implementation("io.springfox:springfox-swagger-ui:3.0.0")
+
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 	implementation ("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.withType<Jar> {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	manifest {
+		attributes["Main-Class"] = "com.opgg.opggapi.OpggApiApplication"
+	}
 }
